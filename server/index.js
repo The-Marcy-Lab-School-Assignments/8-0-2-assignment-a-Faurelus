@@ -7,7 +7,6 @@ const app = express();
 const port = process.env.PORT || 8090;
 app.use(express.static(path.join(__dirname, "../giphy-search", "dist")));
 
-//Can handle query parameters otherwise will default to fetching trending gifs
 app.get("/api/gifs", serveGifs);
 
 app.listen(port, () => {

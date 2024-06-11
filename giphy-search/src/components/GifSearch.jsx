@@ -1,44 +1,28 @@
-import React, { useState } from "react";
-import { handleFetch } from "../utils";
-import API_KEY from "../config";
-function GifSearch({ setData }) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [error, setError] = useState("");
-  const handleChange = (e) => {
-    setSearchTerm(e.target.value);
-    console.log(searchTerm);
-  };
+import { useState, useEffect } from "react";
+import { fetchGifs, handleFetch } from "../utils";
+
+function GifSearch({ setGifs }) {
+  const [query, setQuery] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const searchUrl = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${searchTerm}&limit=3&rating=g`;
-
-      const response = await handleFetch(searchUrl);
-      setData(response);
-      setSearchTerm("");
-    } catch (error) {
-      setError(error.message);
-      console.log(error.message);
-    }
+    setGifs([]);
+    fetchGifs(setGifs, query);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-            <label htmlFor="searchInput">Enter a Search Term </label>
-            
+      <label htmlFor="searchInput">Enter a Search Term </label>
       <input
+        onChange={(e) => setQuery(e.target.value)}
+        value={query}
         type="text"
         className="form-control"
         id="searchInput"
-        value={searchTerm}
-        onChange={handleChange}
       />
-            
       <button type="submit" className="btn btn-success">
-                Search       
+        Search
       </button>
-          
     </form>
   );
 }
